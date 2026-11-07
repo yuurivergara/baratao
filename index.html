@@ -9,6 +9,7 @@
 <meta property="og:description" content="Promoções do Mercado Livre direto no seu WhatsApp. Grátis, sem conversa, só oferta.">
 <meta property="og:image" content="img/og.jpg">
 <meta name="theme-color" content="#FFB300">
+<noscript><meta http-equiv="refresh" content="0;url=https://chat.whatsapp.com/IgTS0hiCoENJJxhOMiE4pa?s=cl&amp;p=i&amp;mlu=4&amp;ilr=4&amp;iam=2"></noscript>
 <link rel="icon" href="img/logo.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -99,14 +100,17 @@ src="https://www.facebook.com/tr?id=1145555324696719&ev=PageView&noscript=1"
 
 <div class="bar"><a class="cta" href="https://chat.whatsapp.com/IgTS0hiCoENJJxhOMiE4pa?s=cl&amp;p=i&amp;mlu=4&amp;ilr=4&amp;iam=2" rel="noopener">ENTRAR NO GRUPO GRÁTIS</a></div>
 <script>
-// Conta o toque em "Entrar no grupo" como Lead e só depois abre o WhatsApp.
-document.querySelectorAll('a.cta').forEach(function(a){
-  a.addEventListener('click',function(ev){
-    var url=a.href, foi=false;
-    function ir(){ if(!foi){ foi=true; location.href=url; } }
-    try{ if(window.fbq){ ev.preventDefault(); fbq('track','Lead',{content_name:'entrar_grupo'}); setTimeout(ir,350); } }catch(e){ ir(); }
-  });
-});
+// Abre o grupo sozinho assim que a página carrega. Espera o Pixel da Meta carregar (no máximo 1,5 s)
+// para registrar PageView e Lead antes de sair; os botões ficam como reserva caso o navegador bloqueie.
+(function(){
+  var url=document.querySelector('a.cta').href, foi=false;
+  function ir(){ if(!foi){ foi=true; location.replace(url); } }
+  try{ if(window.fbq) fbq('track','Lead',{content_name:'entrar_grupo'}); }catch(e){}
+  var px=document.querySelector('script[src*="fbevents.js"]');
+  if(window.fbq && fbq.callMethod) setTimeout(ir,300); // Pixel já carregou (cache)
+  else if(px){ px.addEventListener('load',function(){ setTimeout(ir,300); }); px.addEventListener('error',ir); }
+  setTimeout(ir,1500);
+})();
 </script>
 </body>
 </html>
