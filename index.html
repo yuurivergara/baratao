@@ -46,6 +46,23 @@ footer{max-width:720px;margin:10px auto 0;padding:0 16px 20px;color:var(--muted)
 .bar{position:fixed;left:0;right:0;bottom:0;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:rgba(255,247,224,.96);box-shadow:0 -4px 16px rgba(0,0,0,.08)}
 .bar .cta{margin:0 auto;padding:15px 16px;font-size:18px}
 </style>
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1145555324696719');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1145555324696719&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
 </head>
 <body>
 <header>
@@ -77,9 +94,19 @@ footer{max-width:720px;margin:10px auto 0;padding:0 16px 20px;color:var(--muted)
 </main>
 
 <footer>
-  O Baratão é um grupo independente e não tem vínculo com o Mercado Livre. Alguns links são de afiliado: podemos ganhar uma comissão, sem custo extra para você. Esta página não coleta dados pessoais.
+  O Baratão é um grupo independente e não tem vínculo com o Mercado Livre. Alguns links são de afiliado: podemos ganhar uma comissão, sem custo extra para você. Esta página usa o Pixel da Meta só para medir o desempenho dos anúncios; não pedimos nenhum dado seu.
 </footer>
 
 <div class="bar"><a class="cta" href="https://chat.whatsapp.com/IgTS0hiCoENJJxhOMiE4pa" rel="noopener">ENTRAR NO GRUPO GRÁTIS</a></div>
+<script>
+// Conta o toque em "Entrar no grupo" como Lead e só depois abre o WhatsApp.
+document.querySelectorAll('a.cta').forEach(function(a){
+  a.addEventListener('click',function(ev){
+    var url=a.href, foi=false;
+    function ir(){ if(!foi){ foi=true; location.href=url; } }
+    try{ if(window.fbq){ ev.preventDefault(); fbq('track','Lead',{content_name:'entrar_grupo'}); setTimeout(ir,350); } }catch(e){ ir(); }
+  });
+});
+</script>
 </body>
 </html>
