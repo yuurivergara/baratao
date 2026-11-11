@@ -9,7 +9,6 @@
 <meta property="og:description" content="Promoções do Mercado Livre direto no seu WhatsApp. Grátis, sem conversa, só oferta.">
 <meta property="og:image" content="img/og.jpg">
 <meta name="theme-color" content="#FFB300">
-<noscript><meta http-equiv="refresh" content="0;url=https://chat.whatsapp.com/IgTS0hiCoENJJxhOMiE4pa?s=cl&amp;p=i&amp;mlu=4&amp;ilr=4&amp;iam=2"></noscript>
 <link rel="icon" href="img/logo.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -69,7 +68,7 @@ src="https://www.facebook.com/tr?id=1145555324696719&ev=PageView&noscript=1"
 <header>
   <img class="logo" src="img/logo.jpg" alt="Logo do grupo Baratão" width="96" height="96">
   <h1>Grupo Baratão</h1>
-  <p class="sub">Promoções do Mercado Livre direto no seu WhatsApp, o dia inteiro.</p>
+  <p class="sub">Promoções de loja oficial (Mercado Livre, Amazon e mais) direto no seu WhatsApp, o dia inteiro.</p>
   <div class="pills"><span class="pill">✅ Grátis</span><span class="pill">✅ Só admins postam</span><span class="pill">✅ Sem conversa, só oferta</span></div>
   <a class="cta" href="https://chat.whatsapp.com/IgTS0hiCoENJJxhOMiE4pa?s=cl&amp;p=i&amp;mlu=4&amp;ilr=4&amp;iam=2" rel="noopener">ENTRAR NO GRUPO GRÁTIS<small>Abre o WhatsApp · saia quando quiser</small></a>
 </header>
@@ -95,21 +94,28 @@ src="https://www.facebook.com/tr?id=1145555324696719&ev=PageView&noscript=1"
 </main>
 
 <footer>
-  O Baratão é um grupo independente e não tem vínculo com o Mercado Livre. Alguns links são de afiliado: podemos ganhar uma comissão, sem custo extra para você. Esta página usa o Pixel da Meta só para medir o desempenho dos anúncios; não pedimos nenhum dado seu.
+  O Baratão é um grupo independente e não tem vínculo com as lojas. Alguns links são de afiliado: podemos ganhar uma comissão, sem custo extra para você. Esta página usa o Pixel da Meta só para medir o desempenho dos anúncios; não pedimos nenhum dado seu.
 </footer>
 
 <div class="bar"><a class="cta" href="https://chat.whatsapp.com/IgTS0hiCoENJJxhOMiE4pa?s=cl&amp;p=i&amp;mlu=4&amp;ilr=4&amp;iam=2" rel="noopener">ENTRAR NO GRUPO GRÁTIS</a></div>
 <script>
-// Abre o grupo sozinho assim que a página carrega. Espera o Pixel da Meta carregar (no máximo 1,5 s)
-// para registrar PageView e Lead antes de sair; os botões ficam como reserva caso o navegador bloqueie.
+// Dentro do Instagram/Facebook a página do chat.whatsapp.com manda o botão para a loja de apps em vez de abrir o
+// WhatsApp. Por isso o botão abre o app direto pelo link do próprio WhatsApp (precisa de toque: navegador de app
+// bloqueia abrir app sozinho). Se o app não abrir em 2 s, cai no convite normal. Lead = toque no botão.
 (function(){
-  var url=document.querySelector('a.cta').href, foi=false;
-  function ir(){ if(!foi){ foi=true; location.replace(url); } }
-  try{ if(window.fbq) fbq('track','Lead',{content_name:'entrar_grupo'}); }catch(e){}
-  var px=document.querySelector('script[src*="fbevents.js"]');
-  if(window.fbq && fbq.callMethod) setTimeout(ir,300); // Pixel já carregou (cache)
-  else if(px){ px.addEventListener('load',function(){ setTimeout(ir,300); }); px.addEventListener('error',ir); }
-  setTimeout(ir,1500);
+  var CODE='IgTS0hiCoENJJxhOMiE4pa', WEB='https://chat.whatsapp.com/'+CODE;
+  var android=/Android/i.test(navigator.userAgent);
+  var app=android
+    ? 'intent://chat?code='+CODE+'#Intent;scheme=whatsapp;S.browser_fallback_url='+encodeURIComponent(WEB)+';end'
+    : 'whatsapp://chat?code='+CODE;
+  document.querySelectorAll('a.cta').forEach(function(a){
+    a.href=app;
+    a.addEventListener('click',function(){
+      try{ if(window.fbq) fbq('track','Lead',{content_name:'entrar_grupo'}); }catch(e){}
+      var t=setTimeout(function(){ if(!document.hidden) location.href=WEB; },2000);
+      document.addEventListener('visibilitychange',function(){ if(document.hidden) clearTimeout(t); },{once:true});
+    });
+  });
 })();
 </script>
 </body>
